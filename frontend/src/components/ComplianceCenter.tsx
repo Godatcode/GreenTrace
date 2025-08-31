@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 interface ComplianceCenterProps {
@@ -30,13 +30,72 @@ const ComplianceCenter: React.FC<ComplianceCenterProps> = ({ productRegistry, on
   const [complianceRules, setComplianceRules] = useState<ComplianceRule[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [complianceHistory, setComplianceHistory] = useState<any[]>([]);
+  // const [complianceHistory, setComplianceHistory] = useState<any[]>([]);
   const [overallCompliance, setOverallCompliance] = useState({
     totalProducts: 0,
     compliantProducts: 0,
     averageScore: 0,
     riskLevel: 'low'
   });
+
+  const fetchComplianceData = useCallback(async () => {
+    if (!productRegistry) return;
+    
+    try {
+      setLoading(true);
+      const count = await productRegistry.getProductCount();
+      const productsData: ProductCompliance[] = [];
+      
+      if (count.toNumber() > 0) {
+        const batchIds = await productRegistry.getAllProductBatchIds();
+        
+        for (const batchId of batchIds) {
+          try {
+            const complianceData = await productRegistry.getProductWithCompliance(batchId);
+            const basicData = await productRegistry.getProduct(batchId);
+            
+            productsData.push({
+              batchId,
+              name: basicData.product,
+              certification: basicData.certification,
+              carbonActivity: basicData.carbonActivity,
+              complianceScore: complianceData.complianceScore,
+              isCompliant: complianceData.isCompliant,
+              timestamp: basicData.timestamp.toNumber(),
+              lastUpdated: Date.now()
+            });
+          } catch (error) {
+            console.error(`Error fetching compliance for ${batchId}:`, error);
+          }
+        }
+      }
+      
+      setProducts(productsData);
+      calculateOverallCompliance(productsData);
+      
+    } catch (error) {
+      console.error('Error fetching compliance data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [productRegistry]);
+
+  const calculateOverallCompliance = (productsData: ProductCompliance[]) => {
+    const total = productsData.length;
+    const compliant = productsData.filter(p => p.isCompliant).length;
+    const averageScore = total > 0 ? productsData.reduce((sum, p) => sum + p.complianceScore, 0) / total : 0;
+    
+    let riskLevel = 'low';
+    if (averageScore < 60) riskLevel = 'high';
+    else if (averageScore < 80) riskLevel = 'medium';
+    
+    setOverallCompliance({
+      totalProducts: total,
+      compliantProducts: compliant,
+      averageScore: Math.round(averageScore),
+      riskLevel
+    });
+  };
 
   // Initialize compliance rules
   useEffect(() => {
@@ -78,66 +137,7 @@ const ComplianceCenter: React.FC<ComplianceCenterProps> = ({ productRegistry, on
     if (productRegistry) {
       fetchComplianceData();
     }
-  }, [productRegistry]);
-
-  const fetchComplianceData = async () => {
-    if (!productRegistry) return;
-    
-    try {
-      setLoading(true);
-      const count = await productRegistry.getProductCount();
-      const productsData: ProductCompliance[] = [];
-      
-      if (count.toNumber() > 0) {
-        const batchIds = await productRegistry.getAllProductBatchIds();
-        
-        for (const batchId of batchIds) {
-          try {
-            const complianceData = await productRegistry.getProductWithCompliance(batchId);
-            const basicData = await productRegistry.getProduct(batchId);
-            
-            productsData.push({
-              batchId,
-              name: basicData.product,
-              certification: basicData.certification,
-              carbonActivity: basicData.carbonActivity,
-              complianceScore: complianceData.complianceScore,
-              isCompliant: complianceData.isCompliant,
-              timestamp: basicData.timestamp.toNumber(),
-              lastUpdated: Date.now()
-            });
-          } catch (error) {
-            console.error(`Error fetching compliance for ${batchId}:`, error);
-          }
-        }
-      }
-      
-      setProducts(productsData);
-      calculateOverallCompliance(productsData);
-      
-    } catch (error) {
-      console.error('Error fetching compliance data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calculateOverallCompliance = (productsData: ProductCompliance[]) => {
-    const total = productsData.length;
-    const compliant = productsData.filter(p => p.isCompliant).length;
-    const averageScore = total > 0 ? productsData.reduce((sum, p) => sum + p.complianceScore, 0) / total : 0;
-    
-    let riskLevel = 'low';
-    if (averageScore < 60) riskLevel = 'high';
-    else if (averageScore < 80) riskLevel = 'medium';
-    
-    setOverallCompliance({
-      totalProducts: total,
-      compliantProducts: compliant,
-      averageScore: Math.round(averageScore),
-      riskLevel
-    });
-  };
+  }, [productRegistry, fetchComplianceData]);
 
   const updateComplianceScore = async (batchId: string, newScore: number) => {
     if (!productRegistry) return;

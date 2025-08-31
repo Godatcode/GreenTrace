@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 interface ICMMockProps {
@@ -22,13 +22,7 @@ const ICMMock: React.FC<ICMMockProps> = ({ productRegistry, onClose }) => {
   // Mock cross-chain networks
   const networks = ['ethereum', 'polygon', 'bsc'];
 
-  useEffect(() => {
-    if (productRegistry) {
-      fetchAvailableProducts();
-    }
-  }, [productRegistry]);
-
-  const fetchAvailableProducts = async () => {
+  const fetchAvailableProducts = useCallback(async () => {
     if (!productRegistry) return;
     
     try {
@@ -43,9 +37,9 @@ const ICMMock: React.FC<ICMMockProps> = ({ productRegistry, onClose }) => {
     } catch (error) {
       console.error('Error fetching products:', error);
     }
-  };
+  }, [productRegistry]);
 
-  const fetchCrossChainStatus = async () => {
+  const fetchCrossChainStatus = useCallback(async () => {
     if (!selectedBatchId || !productRegistry) return;
     
     try {
@@ -60,7 +54,15 @@ const ICMMock: React.FC<ICMMockProps> = ({ productRegistry, onClose }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedBatchId, productRegistry]);
+
+  useEffect(() => {
+    if (productRegistry) {
+      fetchAvailableProducts();
+    }
+  }, [productRegistry, fetchAvailableProducts]);
+
+
 
   const syncToNetwork = async (network: string) => {
     if (!selectedBatchId || !productRegistry) return;
@@ -121,7 +123,7 @@ const ICMMock: React.FC<ICMMockProps> = ({ productRegistry, onClose }) => {
     if (selectedBatchId) {
       fetchCrossChainStatus();
     }
-  }, [selectedBatchId]);
+  }, [selectedBatchId, fetchCrossChainStatus]);
 
   return (
     <div className="icm-mock-overlay">

@@ -11,7 +11,7 @@ import RegulatorDashboard from './RegulatorDashboard';
 import SampleDataManager from './SampleDataManager';
 import ToastNotifications, { Toast } from './ToastNotifications';
 import LoadingSpinner from './LoadingSpinner';
-import StatusIndicator from './StatusIndicator';
+// import StatusIndicator from './StatusIndicator';
 import ProfileDropdown from './ProfileDropdown';
 
 interface DashboardProps {
@@ -45,38 +45,38 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
   const [djangoUser, setDjangoUser] = useState<any>(null);
 
   // Toast notification functions
-  const addToast = (toast: Omit<Toast, 'id'>) => {
+  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const newToast: Toast = {
       ...toast,
       id: Date.now().toString()
     };
     setToasts(prev => [...prev, newToast]);
-  };
+  }, []);
 
-  const removeToast = (id: string) => {
+  const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
-  };
+  }, []);
 
-  const showSuccessToast = (title: string, message: string) => {
+  const showSuccessToast = useCallback((title: string, message: string) => {
     addToast({ type: 'success', title, message });
-  };
+  }, [addToast]);
 
-  const showErrorToast = (title: string, message: string) => {
+  const showErrorToast = useCallback((title: string, message: string) => {
     addToast({ type: 'error', title, message });
-  };
+  }, [addToast]);
 
-  const showInfoToast = (title: string, message: string) => {
+  const showInfoToast = useCallback((title: string, message: string) => {
     addToast({ type: 'info', title, message });
-  };
+  }, [addToast]);
 
   // Toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle('dark-mode');
-  };
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  //   document.body.classList.toggle('dark-mode');
+  // };
 
   // Connect to Django backend for user authentication
-  const connectToDjango = async () => {
+  const connectToDjango = useCallback(async () => {
     if (!isConnected) return;
     
     try {
@@ -114,7 +114,7 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
       setUserRole('public');
       setIsAuthenticated(false);
     }
-  };
+  }, [isConnected, account]);
 
   // Check for existing authentication on component mount
   useEffect(() => {
@@ -167,14 +167,14 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
     };
 
     initializeContracts();
-  }, [isConnected, account, contracts.productRegistry, contracts.carbonCredit]);
+  }, [isConnected, account, contracts.productRegistry, contracts.carbonCredit, showErrorToast]);
 
   // Connect to Django when wallet connects
   useEffect(() => {
     if (isConnected && account) {
       connectToDjango();
     }
-  }, [isConnected, account]);
+  }, [isConnected, account, connectToDjango]);
 
   // Connect to MetaMask
   const connectWallet = async () => {

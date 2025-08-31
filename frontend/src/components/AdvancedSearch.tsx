@@ -57,10 +57,10 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
   // Get unique values for filter options
   const uniqueValues = useMemo(() => ({
-    certifications: [...new Set(products.map(p => p.certification).filter(Boolean))],
-    locations: [...new Set(products.map(p => p.location).filter(Boolean))],
-    producers: [...new Set(products.map(p => p.producer).filter(Boolean))],
-    carbonActivities: [...new Set(products.map(p => p.carbonActivity).filter(Boolean))]
+    certifications: Array.from(new Set(products.map(p => p.certification).filter(Boolean))),
+    locations: Array.from(new Set(products.map(p => p.location).filter(Boolean))),
+    producers: Array.from(new Set(products.map(p => p.producer).filter(Boolean))),
+    carbonActivities: Array.from(new Set(products.map(p => p.carbonActivity).filter(Boolean)))
   }), [products]);
 
   // Apply filters and search

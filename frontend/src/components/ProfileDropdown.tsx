@@ -58,15 +58,15 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ user, onLogout, onRef
     }
   };
 
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'public': return 'var(--accent-success)';
-      case 'private': return 'var(--accent-warning)';
-      case 'enterprise': return 'var(--accent-secondary)';
-      case 'admin': return 'var(--accent-danger)';
-      default: return 'var(--accent-primary)';
-    }
-  };
+  // const getRoleColor = (role: string) => {
+  //   switch (role) {
+  //     case 'public': return 'var(--accent-success)';
+  //     case 'private': return 'var(--accent-warning)';
+  //     case 'enterprise': return 'var(--accent-secondary)';
+  //     case 'admin': return 'var(--accent-danger)';
+  //     default: return 'var(--accent-primary)';
+  //   }
+  // };
 
   return (
     <div className="profile-dropdown" ref={dropdownRef}>

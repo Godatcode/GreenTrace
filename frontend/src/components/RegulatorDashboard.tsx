@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 interface RegulatorDashboardProps {
@@ -110,14 +110,7 @@ const RegulatorDashboard: React.FC<RegulatorDashboardProps> = ({ productRegistry
     setComplianceSnapshots(mockSnapshots);
   }, []);
 
-  // Fetch products for selection
-  useEffect(() => {
-    if (productRegistry) {
-      fetchProducts();
-    }
-  }, [productRegistry]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     if (!productRegistry) return;
     
     try {
@@ -155,7 +148,14 @@ const RegulatorDashboard: React.FC<RegulatorDashboardProps> = ({ productRegistry
     } finally {
       setLoading(false);
     }
-  };
+  }, [productRegistry]);
+
+  // Fetch products for selection
+  useEffect(() => {
+    if (productRegistry) {
+      fetchProducts();
+    }
+  }, [productRegistry, fetchProducts]);
 
   const generateComplianceReport = () => {
     const report = {

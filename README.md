@@ -230,19 +230,19 @@ gunicorn greentrace.wsgi:application
 
 ## 🚀 **Future Roadmap**
 
-### **Phase 2 (Next 3 months)**
+### **Phase 2**
 - [ ] IoT sensor integration
 - [ ] Advanced analytics dashboard
 - [ ] Mobile app development
 - [ ] Enterprise API access
 
-### **Phase 3 (6 months)**
+### **Phase 3**
 - [ ] AI-powered compliance prediction
 - [ ] Multi-language support
 - [ ] Advanced reporting tools
 - [ ] Third-party integrations
 
-### **Phase 4 (12 months)**
+### **Phase 4**
 - [ ] Global supply chain network
 - [ ] Advanced cross-chain protocols
 - [ ] Machine learning optimization
@@ -285,9 +285,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 **Contact & Support**
 
-- **Project Lead**: [Your Name](mailto:your.email@example.com)
-- **📖 Full Documentation**: [Complete Platform Documentation](FULL_DOCUMENTATION.md) - Comprehensive guide for all users
-- **GitHub Issues**: [Report Bugs](https://github.com/yourusername/greentrace/issues)
+- **Project Lead**: [ARKA](mailto:arka25.cp@gmail.com)
+- **GitHub Issues**: [Report Bugs](https://github.com/Godatcode/greentrace/issues)
+- **Documentation**: [Full Docs](https://docs.greentrace.com)
 - **Demo**: [Live Demo](https://demo.greentrace.com)
 
 ## 🙏 **Acknowledgments**
@@ -303,9 +303,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **🌱 Built with ❤️ for a sustainable future**
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/greentrace?style=social)](https://github.com/yourusername/greentrace)
-[![GitHub forks](https://img.shields.io/github/forks/yourusername/greentrace?style=social)](https://github.com/yourusername/greentrace)
-[![GitHub issues](https://img.shields.io/github/issues/yourusername/greentrace)](https://github.com/yourusername/greentrace/issues)
+[![GitHub stars](https://img.shields.io/github/stars/yourusername/greentrace?style=social)](https://github.com/Godatcode/GreenTrace)
+[![GitHub forks](https://img.shields.io/github/forks/yourusername/greentrace?style=social)](https://github.com/Godatcode/GreenTrace)
+[![GitHub issues](https://img.shields.io/github/issues/yourusername/greentrace)](https://github.com/Godatcode/GreenTrace/issues)
 
 **Star this repo if you found it helpful! ⭐**
 

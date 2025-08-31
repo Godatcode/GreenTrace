@@ -286,8 +286,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 **Contact & Support**
 
 - **Project Lead**: [Your Name](mailto:your.email@example.com)
+- **📖 Full Documentation**: [Complete Platform Documentation](FULL_DOCUMENTATION.md) - Comprehensive guide for all users
 - **GitHub Issues**: [Report Bugs](https://github.com/yourusername/greentrace/issues)
-- **Documentation**: [Full Docs](https://docs.greentrace.com)
 - **Demo**: [Live Demo](https://demo.greentrace.com)
 
 ## 🙏 **Acknowledgments**

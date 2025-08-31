@@ -1,76 +1,70 @@
 """
 Carbon credit views for GreenTrace.
 """
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.models import User
+from users.models import UserProfile
+import json
 from .models import CarbonCredit
 
 
-class CarbonCreditListView(LoginRequiredMixin, ListView):
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_carbon_credit_api(request):
+    """API endpoint to create carbon credits from frontend."""
+    try:
+        data = json.loads(request.body)
+        
+        # Create or get user based on wallet address
+        wallet_address = data.get('wallet_address')
+        if not wallet_address:
+            return JsonResponse({'error': 'Wallet address required'}, status=400)
+        
+        # Try to find existing user with this wallet address
+        try:
+            user_profile = UserProfile.objects.get(wallet_address=wallet_address)
+            user = user_profile.user
+        except UserProfile.DoesNotExist:
+            # Create new user if not found
+            username = f"user_{wallet_address[:8]}"
+            user = User.objects.create_user(
+                username=username,
+                email=f"{username}@greentrace.local",
+                password=None  # No password for wallet-based auth
+            )
+            # Create user profile
+            UserProfile.objects.create(
+                user=user,
+                wallet_address=wallet_address,
+                role='public',
+                blockchain_network=data.get('blockchain_network', 'avalanche-fuji')
+            )
+        
+        # Create the carbon credit
+        credit = CarbonCredit.objects.create(
+            amount=data.get('amount', 0),
+            unit=data.get('unit', 'tonnes'),
+            description=data.get('description', ''),
+            carbon_offset=data.get('carbon_offset', ''),
+            created_by=user,
+            blockchain_network=data.get('blockchain_network', 'avalanche-fuji'),
+            status='issued'
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'credit_id': credit.id,
+            'message': 'Carbon credit created successfully'
+        })
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def carbon_credit_list(request):
     """Display list of carbon credits."""
-    model = CarbonCredit
-    template_name = 'carbon_credits/credit_list.html'
-    context_object_name = 'credits'
-    
-    def get_queryset(self):
-        """Filter credits based on user role."""
-        queryset = CarbonCredit.objects.all()
-        
-        # Apply privacy filters based on user role
-        if not self.request.user.is_staff:
-            # Regular users see only verified credits
-            queryset = queryset.filter(verification_status='verified')
-        
-        return queryset
-
-
-class CarbonCreditIssueView(LoginRequiredMixin, CreateView):
-    """Issue new carbon credits."""
-    model = CarbonCredit
-    template_name = 'carbon_credits/credit_form.html'
-    fields = [
-        'amount', 'unit', 'recipient', 'description', 'carbon_offset',
-        'verification_status'
-    ]
-    success_url = reverse_lazy('credit_list')
-    
-    def form_valid(self, form):
-        """Set the issuer field to current user."""
-        form.instance.issuer = self.request.user.username
-        form.instance.status = 'issued'
-        return super().form_valid(form)
-
-
-class CarbonCreditDetailView(LoginRequiredMixin, DetailView):
-    """Display carbon credit details."""
-    model = CarbonCredit
-    template_name = 'carbon_credits/credit_detail.html'
-    context_object_name = 'credit'
-
-
-class CarbonCreditTransferView(LoginRequiredMixin, UpdateView):
-    """Transfer carbon credits."""
-    model = CarbonCredit
-    template_name = 'carbon_credits/credit_transfer.html'
-    fields = ['recipient', 'amount']
-    success_url = reverse_lazy('credit_list')
-    
-    def form_valid(self, form):
-        """Update status to transferred."""
-        form.instance.status = 'transferred'
-        return super().form_valid(form)
-
-
-class CarbonCreditRetireView(LoginRequiredMixin, UpdateView):
-    """Retire carbon credits."""
-    model = CarbonCredit
-    template_name = 'carbon_credits/credit_retire.html'
-    fields = ['reason']
-    success_url = reverse_lazy('credit_list')
-    
-    def form_valid(self, form):
-        """Update status to retired."""
-        form.instance.status = 'retired'
-        return super().form_valid(form)
+    credits = CarbonCredit.objects.all().order_by('-created_at')
+    return render(request, 'carbon_credits/credit_list.html', {'credits': credits})

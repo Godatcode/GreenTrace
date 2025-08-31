@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 interface CarbonCredit {
@@ -86,10 +86,46 @@ const CarbonCreditManager: React.FC<CarbonCreditManagerProps> = ({ carbonCredit,
     }
   ], []);
 
+  // Fetch real credit balances from blockchain
+  const fetchCreditBalances = useCallback(async () => {
+    if (!carbonCredit) return;
+    
+    try {
+      // Get current user's credit balance
+      const userAddress = await carbonCredit.signer.getAddress();
+      const balance = await carbonCredit.credits(userAddress);
+      
+      // If user has credits, add them to the list
+      if (balance.gt(0)) {
+        const userCredits = credits.filter(c => c.issuer === 'Your Address');
+        const hasUserCredits = userCredits.some(c => c.amount === balance.toNumber());
+        
+        if (!hasUserCredits) {
+          const newCredit: CarbonCredit = {
+            id: `CC-USER-${Date.now()}`,
+            amount: balance.toNumber(),
+            unit: 'tonnes',
+            issuer: 'Your Address',
+            recipient: 'Your Address',
+            status: 'issued',
+            timestamp: Math.floor(Date.now() / 1000),
+            description: 'Your blockchain carbon credits',
+            carbonOffset: 'Verified on blockchain',
+            verificationStatus: 'verified'
+          };
+          setCredits(prev => [newCredit, ...prev]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching credit balances:', error);
+    }
+  }, [carbonCredit, credits]);
+
   useEffect(() => {
-    // For now, use mock data. Later this will come from the contract
+    // Use mock data initially, then fetch real blockchain data
     setCredits(mockCredits);
-  }, [mockCredits]);
+    fetchCreditBalances();
+  }, [mockCredits, fetchCreditBalances]);
 
   const handleIssueCredit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,17 +137,39 @@ const CarbonCreditManager: React.FC<CarbonCreditManagerProps> = ({ carbonCredit,
     try {
       setLoading(true);
       
-      // This would call your contract's issue function
-      // const tx = await carbonCredit.issueCredit(
-      //   issueForm.amount,
-      //   issueForm.unit,
-      //   issueForm.recipient,
-      //   issueForm.description,
-      //   issueForm.carbonOffset
-      // );
-      // await tx.wait();
+      // Call the smart contract to issue credits
+      const amount = parseFloat(issueForm.amount);
+      const recipient = issueForm.recipient || '0x0000000000000000000000000000000000000000'; // Default to zero address if empty
       
-      // For now, simulate success
+      // First save to Django backend
+      try {
+        const djangoResponse = await fetch('http://localhost:8000/api/credits/create/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: amount,
+            unit: issueForm.unit,
+            description: issueForm.description,
+            carbon_offset: issueForm.carbonOffset,
+            blockchain_network: 'avalanche-fuji',
+            wallet_address: recipient
+          })
+        });
+        
+        if (!djangoResponse.ok) {
+          console.warn('Failed to save to Django backend, but continuing with blockchain');
+        }
+      } catch (error) {
+        console.warn('Django backend error, but continuing with blockchain:', error);
+      }
+      
+      // Now execute on blockchain
+      const tx = await carbonCredit.issueCredit(recipient, amount);
+      await tx.wait();
+      
+      // Create new credit record
       const newCredit: CarbonCredit = {
         id: `CC-${Date.now()}`,
         amount: parseFloat(issueForm.amount),
@@ -174,10 +232,21 @@ const CarbonCreditManager: React.FC<CarbonCreditManagerProps> = ({ carbonCredit,
 
   const handleRetireCredit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!carbonCredit) {
+      alert('Please connect your wallet first!');
+      return;
+    }
+    
     try {
       setLoading(true);
       
-      // Simulate retirement
+      const amount = parseFloat(retireForm.amount);
+      
+      // Call the smart contract to retire credits
+      const tx = await carbonCredit.retireCredit(amount);
+      await tx.wait();
+      
+      // Update local state
       const credit = credits.find(c => c.id === retireForm.creditId);
       if (credit) {
         const updatedCredits = credits.map(c => 
@@ -186,14 +255,14 @@ const CarbonCreditManager: React.FC<CarbonCreditManagerProps> = ({ carbonCredit,
             : c
         );
         setCredits(updatedCredits);
-        alert('Credit retired successfully!');
+        alert('Credit retired successfully on blockchain!');
         setRetireForm({ creditId: '', reason: '', amount: '' });
         setActiveTab('overview');
       }
       
     } catch (error) {
       console.error('Error retiring credit:', error);
-      alert('Error retiring credit.');
+      alert('Error retiring credit. Check console for details.');
     } finally {
       setLoading(false);
     }

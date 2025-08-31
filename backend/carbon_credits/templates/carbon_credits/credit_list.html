@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Credits - GreenTrace{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>🌿 Carbon Credit Registry</h1>
+    <p>Track and manage carbon credits across the supply chain</p>
+    
+    <div class="credits-grid">
+        {% for credit in credits %}
+        <div class="credit-card">
+            <div class="credit-header">
+                <h3>{{ credit.amount }} {{ credit.unit }}</h3>
+                <span class="status-badge {{ credit.status }}">{{ credit.status|title }}</span>
+            </div>
+            <div class="credit-details">
+                <p><strong>Description:</strong> {{ credit.description }}</p>
+                <p><strong>Carbon Offset:</strong> {{ credit.carbon_offset }}</p>
+                <p><strong>Created:</strong> {{ credit.created_at|date:"M d, Y" }}</p>
+                <p><strong>Network:</strong> {{ credit.blockchain_network }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-credits">
+            <p>No carbon credits found. Start by issuing credits through the frontend.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -213,6 +213,46 @@ ${reportData.recommendations.map((rec: string, index: number) => `${index + 1}. 
     URL.revokeObjectURL(url);
   };
 
+  // Update compliance score for a specific product
+  const updateComplianceScore = async (batchId: string, newScore: number, reason: string) => {
+    if (!productRegistry) return;
+    
+    try {
+      setLoading(true);
+      
+      // Call smart contract to update compliance score
+      const tx = await productRegistry.updateComplianceScore(batchId, newScore);
+      await tx.wait();
+      
+      // Add to audit log
+      const newAuditLog: AuditLog = {
+        id: Date.now().toString(),
+        action: 'Score Update',
+        productId: batchId,
+        productName: products.find(p => p.batchId === batchId)?.name || 'Unknown',
+        oldScore: products.find(p => p.batchId === batchId)?.complianceScore || 0,
+        newScore: newScore,
+        regulator: 'Regulator Dashboard',
+        timestamp: Date.now(),
+        reason: reason,
+        complianceImpact: newScore > (products.find(p => p.batchId === batchId)?.complianceScore || 0) ? 'positive' : 'negative'
+      };
+      
+      setAuditLogs(prev => [newAuditLog, ...prev]);
+      
+      // Refresh products data
+      await fetchProducts();
+      
+      alert(`Compliance score updated for ${batchId} to ${newScore}`);
+      
+    } catch (error) {
+      console.error('Error updating compliance score:', error);
+      alert('Error updating compliance score. Check console for details.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getComplianceImpactColor = (impact: string) => {
     switch (impact) {
       case 'positive': return 'success';
@@ -460,6 +500,42 @@ ${reportData.recommendations.map((rec: string, index: number) => `${index + 1}. 
                       
                       <div className="investigation-actions">
                         <h5>Regulatory Actions</h5>
+                        
+                        {/* Compliance Score Update */}
+                        <div className="compliance-update">
+                          <h6>Update Compliance Score</h6>
+                          <div className="score-update-form">
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              placeholder="New Score (0-100)"
+                              className="score-input"
+                              id="newScore"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Reason for update"
+                              className="reason-input"
+                              id="updateReason"
+                            />
+                            <button 
+                              className="regulatory-btn primary"
+                              onClick={() => {
+                                const newScore = parseInt((document.getElementById('newScore') as HTMLInputElement).value);
+                                const reason = (document.getElementById('updateReason') as HTMLInputElement).value;
+                                if (newScore >= 0 && newScore <= 100 && reason.trim()) {
+                                  updateComplianceScore(selectedProduct, newScore, reason);
+                                } else {
+                                  alert('Please enter a valid score (0-100) and reason');
+                                }
+                              }}
+                            >
+                              📊 Update Score
+                            </button>
+                          </div>
+                        </div>
+                        
                         <div className="action-buttons">
                           <button className="regulatory-btn warning">
                             ⚠️ Flag for Review

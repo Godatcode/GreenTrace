@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     # API endpoints
-    path('api/create/', views.create_product_api, name='create_product_api'),
+    path('create/', views.create_product_api, name='create_product_api'),
     
     # Product views
     path('', views.ProductListView.as_view(), name='product_list'),

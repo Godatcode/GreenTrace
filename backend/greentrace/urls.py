@@ -9,7 +9,12 @@ from django.http import JsonResponse
 
 def health_check(request):
     """Simple health check endpoint for Railway"""
-    return JsonResponse({"status": "healthy", "service": "GreenTrace Backend"})
+    return JsonResponse({
+        "status": "healthy", 
+        "service": "GreenTrace Backend",
+        "debug": settings.DEBUG,
+        "allowed_hosts": settings.ALLOWED_HOSTS
+    })
 
 urlpatterns = [
     path('', health_check, name='health_check'),

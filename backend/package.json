@@ -1,0 +1,11 @@
+{
+  "name": "greentrace-backend",
+  "version": "1.0.0",
+  "description": "GreenTrace Django Backend API",
+  "scripts": {
+    "start": "python manage.py runserver 0.0.0.0:$PORT"
+  },
+  "engines": {
+    "python": "3.11.0"
+  }
+}

@@ -31,11 +31,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     
-    # Local apps
-    'users',
-    'products',
-    'carbon_credits',
-    'privacy',
+    # Local apps (temporarily disabled for debugging)
+    # 'users',
+    # 'products',
+    # 'carbon_credits',
+    # 'privacy',
 ]
 
 MIDDLEWARE = [

@@ -12,11 +12,23 @@ def health_check(request):
     return JsonResponse({
         "status": "healthy", 
         "service": "GreenTrace Backend",
-        "message": "Backend is working!"
+        "message": "Backend is working!",
+        "url": request.get_full_path(),
+        "method": request.method
+    })
+
+def test_endpoint(request):
+    """Test endpoint for debugging"""
+    return JsonResponse({
+        "message": "Test endpoint working!",
+        "url": request.get_full_path(),
+        "method": request.method,
+        "headers": dict(request.headers)
     })
 
 urlpatterns = [
     path('', health_check, name='health_check'),
+    path('test/', test_endpoint, name='test_endpoint'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/auth/', include('users.urls')),

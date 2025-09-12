@@ -9,13 +9,22 @@ from django.http import JsonResponse
 
 def health_check(request):
     """Simple health check endpoint"""
-    return JsonResponse({
-        "status": "healthy", 
-        "service": "GreenTrace Backend",
-        "message": "Backend is working!",
-        "url": request.get_full_path(),
-        "method": request.method
-    })
+    try:
+        return JsonResponse({
+            "status": "healthy", 
+            "service": "GreenTrace Backend",
+            "message": "Backend is working!",
+            "url": request.get_full_path(),
+            "method": request.method,
+            "django_apps": [app.label for app in __import__('django.apps', fromlist=['apps']).apps.get_app_configs()]
+        })
+    except Exception as e:
+        return JsonResponse({
+            "status": "error",
+            "message": str(e),
+            "url": request.get_full_path(),
+            "method": request.method
+        })
 
 def test_endpoint(request):
     """Test endpoint for debugging"""
@@ -30,10 +39,11 @@ urlpatterns = [
     path('', health_check, name='health_check'),
     path('test/', test_endpoint, name='test_endpoint'),
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('api/auth/', include('users.urls')),
-    path('api/products/', include('products.urls')),
-    path('api/credits/', include('carbon_credits.urls')),
+    # Temporarily disable custom API endpoints for debugging
+    # path('api/', include('api.urls')),
+    # path('api/auth/', include('users.urls')),
+    # path('api/products/', include('products.urls')),
+    # path('api/credits/', include('carbon_credits.urls')),
 ]
 
 # Serve static and media files in development

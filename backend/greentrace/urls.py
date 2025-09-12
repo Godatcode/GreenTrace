@@ -18,11 +18,10 @@ def health_check(request):
 urlpatterns = [
     path('', health_check, name='health_check'),
     path('admin/', admin.site.urls),
-    # Temporarily disable custom API endpoints for testing
-    # path('api/', include('api.urls')),
-    # path('api/auth/', include('users.urls')),
-    # path('api/products/', include('products.urls')),
-    # path('api/credits/', include('carbon_credits.urls')),
+    path('api/', include('api.urls')),
+    path('api/auth/', include('users.urls')),
+    path('api/products/', include('products.urls')),
+    path('api/credits/', include('carbon_credits.urls')),
 ]
 
 # Serve static and media files in development

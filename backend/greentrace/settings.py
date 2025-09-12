@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,*.railway.app,*.vercel.app,*.onrender.com', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = ['*']  # Allow all hosts for now
 
 # Application definition
 INSTALLED_APPS = [
@@ -31,11 +31,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     
-    # Local apps
-    'users',
-    'products',
-    'carbon_credits',
-    'privacy',
+    # Local apps (temporarily disabled for testing)
+    # 'users',
+    # 'products',
+    # 'carbon_credits',
+    # 'privacy',
 ]
 
 MIDDLEWARE = [

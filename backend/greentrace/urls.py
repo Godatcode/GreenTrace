@@ -30,11 +30,10 @@ urlpatterns = [
     path('', health_check, name='health_check'),
     path('test/', test_endpoint, name='test_endpoint'),
     path('admin/', admin.site.urls),
-    # Temporarily disable custom API endpoints for debugging
-    # path('api/', include('api.urls')),
-    # path('api/auth/', include('users.urls')),
-    # path('api/products/', include('products.urls')),
-    # path('api/credits/', include('carbon_credits.urls')),
+    path('api/', include('api.urls')),
+    path('api/auth/', include('users.urls')),
+    path('api/products/', include('products.urls')),
+    path('api/credits/', include('carbon_credits.urls')),
 ]
 
 # Serve static and media files in development

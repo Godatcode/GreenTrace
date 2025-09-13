@@ -3,10 +3,10 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 
 function App() {
-  // Updated contract addresses after redeployment
+  // Updated contract addresses after redeployment to Avalanche Fuji
   const contracts = {
-    productRegistry: "0xFb49A248737a4AcE3D869a45F0c0fAf7c0B0d563",
-    carbonCredit: "0x939D4970111D4d2E32Fd66E34d1Cbe6101383611"
+    productRegistry: "0x78D866f9704FF874A3484C79aC9405947648588c",
+    carbonCredit: "0x3b7Cbb8C26d2101dBC3808Cc597BCA879001160d"
   };
 
   return (

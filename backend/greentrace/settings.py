@@ -47,7 +47,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'greentrace.middleware.AdminIPRestrictionMiddleware',  # Custom admin security
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,8 +127,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # Admin security settings (hidden from public)
-ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='admin')
-ADMIN_ALLOWED_IPS = config('ADMIN_ALLOWED_IPS', default='', cast=lambda v: [ip.strip() for ip in v.split(',') if ip.strip()])
+ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='secure-admin-panel')
 
 # REST Framework settings
 REST_FRAMEWORK = {

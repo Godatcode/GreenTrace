@@ -14,29 +14,9 @@ class AdminIPRestrictionMiddleware(MiddlewareMixin):
     """
     
     def process_request(self, request):
-        # Only apply to admin URLs (from settings for security)
-        admin_path = getattr(settings, 'ADMIN_CUSTOM_PATH', 'admin')
-        if request.path.startswith(f'/{admin_path}/'):
-            # Get allowed IPs from settings
-            allowed_ips = getattr(settings, 'ADMIN_ALLOWED_IPS', [])
-            
-            # If no IPs are configured, allow all (for development)
-            if not allowed_ips:
-                return None
-            
-            # Get client IP
-            client_ip = self.get_client_ip(request)
-            
-            # Check if IP is allowed
-            if client_ip not in allowed_ips:
-                logger.warning(f"Admin access denied for IP: {client_ip}")
-                return HttpResponseForbidden(
-                    "<h1>Access Denied</h1><p>Your IP address is not authorized to access this area.</p>"
-                )
-            
-            logger.info(f"Admin access granted for IP: {client_ip}")
-        
-        return None
+        # Admin access is controlled by Django's built-in authentication
+        # No additional IP restrictions needed
+        return None  # Allow request to proceed
     
     def get_client_ip(self, request):
         """

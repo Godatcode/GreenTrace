@@ -12,51 +12,12 @@ logger = logging.getLogger(__name__)
 
 def health_check(request):
     """Simple health check endpoint"""
-    try:
-        logger.info(f"Health check request: {request.method} {request.get_full_path()}")
-        logger.info(f"Headers: {dict(request.headers)}")
-        
-        # Handle OPTIONS request for CORS
-        if request.method == 'OPTIONS':
-            response = JsonResponse({})
-            response['Access-Control-Allow-Origin'] = '*'
-            response['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-            response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-            return response
-            
-        # Simple response without complex operations
-        response_data = {
-            "status": "healthy", 
-            "service": "GreenTrace Backend",
-            "message": "Backend is working!",
-            "url": request.get_full_path(),
-            "method": request.method
-        }
-        
-        response = JsonResponse(response_data)
-        response['Access-Control-Allow-Origin'] = '*'
-        logger.info("Health check response sent successfully")
-        return response
-    except Exception as e:
-        logger.error(f"Health check error: {str(e)}")
-        response_data = {
-            "status": "error",
-            "message": str(e),
-            "url": request.get_full_path(),
-            "method": request.method
-        }
-        response = JsonResponse(response_data)
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
+    # Return a simple HTTP response
+    return HttpResponse("GreenTrace Backend is working!", content_type="text/plain")
 
 def test_endpoint(request):
     """Test endpoint for debugging"""
-    return JsonResponse({
-        "message": "Test endpoint working!",
-        "url": request.get_full_path(),
-        "method": request.method,
-        "headers": dict(request.headers)
-    })
+    return HttpResponse("Test endpoint working!", content_type="text/plain")
 
 def favicon_view(request):
     """Handle favicon.ico requests"""

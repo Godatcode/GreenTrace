@@ -5,45 +5,33 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def health_check(request):
     """Simple health check endpoint"""
-    try:
-        return JsonResponse({
-            "status": "healthy", 
-            "service": "GreenTrace Backend",
-            "message": "Backend is working!",
-            "url": request.get_full_path(),
-            "method": request.method,
-            "django_apps": [app.label for app in __import__('django.apps', fromlist=['apps']).apps.get_app_configs()]
-        })
-    except Exception as e:
-        return JsonResponse({
-            "status": "error",
-            "message": str(e),
-            "url": request.get_full_path(),
-            "method": request.method
-        })
+    # Return a simple HTTP response
+    return HttpResponse("GreenTrace Backend is working!", content_type="text/plain")
 
 def test_endpoint(request):
     """Test endpoint for debugging"""
-    return JsonResponse({
-        "message": "Test endpoint working!",
-        "url": request.get_full_path(),
-        "method": request.method,
-        "headers": dict(request.headers)
-    })
+    return HttpResponse("Test endpoint working!", content_type="text/plain")
+
+def favicon_view(request):
+    """Handle favicon.ico requests"""
+    return HttpResponse(status=204)  # No content
 
 urlpatterns = [
     path('', health_check, name='health_check'),
     path('test/', test_endpoint, name='test_endpoint'),
+    path('favicon.ico', favicon_view, name='favicon'),
     path('admin/', admin.site.urls),
-    # Temporarily disable custom API endpoints for debugging
-    # path('api/', include('api.urls')),
-    # path('api/auth/', include('users.urls')),
-    # path('api/products/', include('products.urls')),
-    # path('api/credits/', include('carbon_credits.urls')),
+    path('api/', include('api.urls')),
+    path('api/auth/', include('users.urls')),
+    path('api/products/', include('products.urls')),
+    path('api/credits/', include('carbon_credits.urls')),
 ]
 
 # Serve static and media files in development

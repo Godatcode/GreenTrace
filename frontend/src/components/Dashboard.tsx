@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import ProductRegistryABI from '../contracts/ProductRegistry.json';
 import CarbonCreditABI from '../contracts/CarbonCredit.json';
 import ProductForm, { ProductData } from './ProductForm';
+import { API_ENDPOINTS } from '../config/api';
 import ProductList from './ProductList';
 import CarbonCreditManager from './CarbonCreditManager';
 import ICMMock from './ICMMock';
@@ -81,7 +82,7 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
     
     try {
       // Connect to Django backend to get user role
-      const response = await fetch('http://localhost:8000/api/auth/check/', {
+      const response = await fetch(API_ENDPOINTS.AUTH.CHECK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -220,7 +221,7 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
         
         // Authenticate with Django backend
         try {
-          const response = await fetch('http://localhost:8000/api/auth/check/', {
+          const response = await fetch(API_ENDPOINTS.AUTH.CHECK, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -277,7 +278,7 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
       
       // First, save to Django backend
       try {
-        const djangoResponse = await fetch('http://localhost:8000/api/products/create/', {
+        const djangoResponse = await fetch(API_ENDPOINTS.PRODUCTS.CREATE, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -441,7 +442,7 @@ const Dashboard: React.FC<DashboardProps> = ({ contracts }) => {
     
     try {
       // Refresh user data from Django backend
-      const response = await fetch('http://localhost:8000/api/auth/check/', {
+      const response = await fetch(API_ENDPOINTS.AUTH.CHECK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

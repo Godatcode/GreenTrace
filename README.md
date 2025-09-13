@@ -1,312 +1,217 @@
-# 🌱 GreenTrace - Carbon Credit & Supply Chain Transparency Platform
+# 🌱 GreenTrace
 
-> **Revolutionizing supply chain transparency through blockchain technology, real-time compliance monitoring, and carbon credit management.**
+**Carbon Credit & Supply Chain Transparency Platform**
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yourusername/greentrace)
-[![Blockchain](https://img.shields.io/badge/blockchain-Avalanche%20Fuji-blue)](https://docs.avax.network/)
-[![Tech Stack](https://img.shields.io/badge/tech-React%20%7C%20Django%20%7C%20Solidity-orange)](https://github.com/yourusername/greentrace)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+A comprehensive blockchain-based platform for carbon credit management and supply chain transparency with advanced privacy controls and role-based access management.
 
-## 🏆 **Hackathon Project Overview**
+[![Deployed on Vercel](https://img.shields.io/badge/Frontend-Vercel-00C7B7?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![Deployed on Render](https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render)](https://render.com)
+[![Avalanche Fuji](https://img.shields.io/badge/Blockchain-Avalanche%20Fuji-E84142?style=for-the-badge&logo=avalanche)](https://testnet.snowtrace.io/)
 
-**GreenTrace** is a comprehensive, production-ready platform that addresses critical challenges in modern supply chains:
-- **🌍 Carbon Footprint Tracking**: Real-time monitoring of environmental impact
-- **🔒 Supply Chain Transparency**: Blockchain-verified product provenance
-- **⚡ Compliance Automation**: AI-driven compliance scoring and monitoring
-- **🌐 Cross-Chain Interoperability**: Multi-blockchain data synchronization
+## 🚀 Live Demo
 
-## ✨ **Key Features & Innovations**
+- **Frontend**: [Your Vercel URL]
+- **Backend API**: https://greentrace-backend-eh4d.onrender.com/
+- **Smart Contracts**: [Avalanche Fuji Testnet](https://testnet.snowtrace.io/)
 
-### **🚀 Core Functionality**
-- **Product Registration**: End-to-end blockchain product tracking
-- **Carbon Credit Management**: Full lifecycle (issue, transfer, retire)
-- **Compliance Center**: Real-time monitoring with automated scoring
-- **Regulator Dashboard**: Advanced audit trails and compliance management
-- **Cross-Chain Sync**: Interoperability across multiple blockchains
-- **Advanced Search**: Blockchain-powered product discovery
+## ✨ Features
 
-### **🔬 Technical Innovations**
-- **Smart Contract Architecture**: Optimized Solidity contracts for supply chain operations
-- **Real-Time Blockchain Integration**: Live transaction monitoring and updates
-- **Dual Storage System**: Blockchain + Django backend for optimal performance
-- **Role-Based Access Control**: Enterprise-grade security and privacy
-- **IoT Data Integration**: Ready for sensor data and real-time monitoring
+### 🔐 Role-Based Access Control
+- **Public Users**: View public product data
+- **Private Users**: Access detailed product information
+- **Enterprise Users**: Full data access including IoT sensors
+- **Admin/Regulators**: Complete system oversight
 
-## 🏗️ **Architecture & Technology Stack**
+### 🌿 Carbon Credit Management
+- Issue carbon credits
+- Transfer credits between users
+- Retire credits for offsetting
+- Track credit lifecycle on blockchain
 
-### **Frontend (React + TypeScript)**
+### 📦 Product Registry
+- Register products with blockchain verification
+- Track supply chain transparency
+- Privacy-controlled data access
+- IoT sensor integration
+
+### 🔒 Privacy & Compliance
+- eERC compliance standards
+- Data encryption for sensitive fields
+- Audit trails for all data access
+- GDPR compliance tools
+
+## 🏗️ Architecture
+
 ```
-├── React 18 with TypeScript
-├── Ethers.js for blockchain interaction
-├── Advanced UI components with real-time updates
-├── Responsive design with dark/light themes
-├── Professional dashboard layouts
-└── Real-time compliance monitoring
-```
-
-### **Backend (Django + Python)**
-```
-├── Django 4.2 with REST API
-├── SQLite/PostgreSQL database support
-├── User authentication and role management
-├── Product and carbon credit APIs
-├── Admin interface for system management
-└── CORS-enabled for cross-origin requests
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Smart         │
+│   React/TS      │◄──►│   Django API    │◄──►│   Contracts     │
+│   Vercel        │    │   Render        │    │   Avalanche     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-### **Blockchain (Solidity + Hardhat)**
-```
-├── Solidity 0.8.19 smart contracts
-├── ProductRegistry.sol for supply chain
-├── CarbonCredit.sol for credit management
-├── Hardhat development environment
-├── Avalanche Fuji testnet deployment
-└── Cross-chain messaging capabilities
-```
+## 🛠️ Tech Stack
 
-## 🚀 **Quick Start Guide**
+### Frontend
+- **React 18** with TypeScript
+- **Ethers.js** for blockchain interaction
+- **Modern CSS** with responsive design
+- **Vercel** for deployment
 
-### **Prerequisites**
-- Node.js 16+ and npm
-- Python 3.8+
+### Backend
+- **Django 5.0.1** with REST Framework
+- **SQLite** database (PostgreSQL ready)
+- **CORS** enabled for cross-origin requests
+- **Render** for deployment
+
+### Blockchain
+- **Solidity 0.8.28** smart contracts
+- **Avalanche Fuji** testnet
+- **Hardhat** development framework
+- **Ethers.js** for contract interaction
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- Python 3.13+
+- Git
 - MetaMask wallet
-- Avalanche Fuji testnet configured
 
-### **1. Clone & Setup**
+### 1. Clone Repository
 ```bash
-git clone https://github.com/yourusername/greentrace.git
-cd greentrace
+git clone https://github.com/Godatcode/GreenTrace.git
+cd GreenTrace
+```
 
-# Install frontend dependencies
+### 2. Frontend Setup
+```bash
 cd frontend
 npm install
-
-# Install backend dependencies
-cd ../backend
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### **2. Deploy Smart Contracts**
-```bash
-# Deploy to Avalanche Fuji testnet
-npx hardhat run scripts/deploy.ts --network fuji
-
-# Copy contract addresses to frontend/src/App.tsx
-```
-
-### **3. Start Services**
-```bash
-# Terminal 1: Start Django backend
-cd backend
-python3 manage.py runserver
-
-# Terminal 2: Start React frontend
-cd frontend
 npm start
 ```
 
-### **4. Access the Platform**
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000/api/
-- **Admin Panel**: http://localhost:8000/admin/
-
-## 🔧 **Configuration**
-
-### **Environment Variables**
+### 3. Backend Setup
 ```bash
-# Create .env file
-cp env.example .env
-
-# Configure your settings
-BLOCKCHAIN_NETWORK=avalanche-fuji
-DJANGO_SECRET_KEY=your-secret-key
-CORS_ALLOWED_ORIGINS=http://localhost:3000
-```
-
-### **MetaMask Setup**
-1. Add Avalanche Fuji testnet to MetaMask
-2. Network ID: 43113
-3. RPC URL: https://api.avax-test.network/ext/bc/C/rpc
-4. Get test AVAX from faucet
-
-## 📱 **Platform Walkthrough**
-
-### **🌱 Add Product**
-1. Connect MetaMask wallet
-2. Click "Add Product"
-3. Fill product details (name, batch ID, carbon activity)
-4. Submit to blockchain
-5. Real-time confirmation and tracking
-
-### **🌿 Carbon Credit Management**
-1. Open Carbon Credit Manager
-2. Issue new credits with blockchain verification
-3. Transfer credits between parties
-4. Retire credits with audit trail
-5. Real-time balance updates
-
-### **🔒 Compliance Center**
-1. Monitor real-time compliance scores
-2. View automated risk assessments
-3. Track compliance history
-4. Generate compliance reports
-5. Real-time alerts and notifications
-
-### **🔍 Regulator Dashboard**
-1. Access advanced compliance tools
-2. Update compliance scores
-3. Generate audit reports
-4. Monitor supply chain health
-5. Export regulatory documentation
-
-## 🧪 **Testing & Quality Assurance**
-
-### **Automated Testing**
-```bash
-# Frontend tests
-cd frontend
-npm test
-
-# Backend tests
 cd backend
-python3 manage.py test
-
-# Smart contract tests
-npx hardhat test
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
 ```
 
-### **Manual Testing Checklist**
-- [ ] Wallet connection and authentication
-- [ ] Product registration and blockchain verification
-- [ ] Carbon credit operations
-- [ ] Compliance monitoring and updates
-- [ ] Cross-chain synchronization
-- [ ] Admin dashboard functionality
+### 4. Smart Contracts Setup
+```bash
+# Install dependencies
+npm install
 
-## 📊 **Performance Metrics**
+# Setup environment
+echo "AVALANCHE_FUJI_URL=https://api.avax-test.network/ext/bc/C/rpc" > .env
+echo "PRIVATE_KEY=your_private_key_here" >> .env
 
-### **Blockchain Performance**
-- **Transaction Speed**: < 3 seconds on Avalanche
-- **Gas Efficiency**: Optimized smart contracts
-- **Scalability**: Handles 1000+ products per batch
-- **Cross-Chain**: Multi-network synchronization
+# Deploy contracts
+npx hardhat run scripts/deploy.ts --network fuji
+```
 
-### **System Performance**
-- **API Response Time**: < 200ms average
-- **Real-Time Updates**: Live blockchain monitoring
-- **User Experience**: Intuitive, professional interface
-- **Mobile Responsiveness**: Cross-device compatibility
+## 📖 Documentation
 
-## 🔒 **Security Features**
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Complete deployment instructions
+- **[API Reference](docs/API_REFERENCE.md)** - Backend API documentation
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Development setup and guidelines
+- **[User Guide](docs/USER_GUIDE.md)** - End-user documentation
 
-- **Wallet-Based Authentication**: Secure blockchain identity
-- **Role-Based Access Control**: Enterprise-grade permissions
-- **Smart Contract Security**: Audited Solidity code
-- **Data Privacy**: Configurable privacy levels
+## 🔗 Smart Contracts
+
+### Deployed Contracts (Avalanche Fuji)
+- **ProductRegistry**: `0x78D866f9704FF874A3484C79aC9405947648588c`
+- **CarbonCredit**: `0x3b7Cbb8C26d2101dBC3808Cc597BCA879001160d`
+
+### View on Block Explorer
+- [ProductRegistry Contract](https://testnet.snowtrace.io/address/0x78D866f9704FF874A3484C79aC9405947648588c)
+- [CarbonCredit Contract](https://testnet.snowtrace.io/address/0x3b7Cbb8C26d2101dBC3808Cc597BCA879001160d)
+
+## 🔧 API Endpoints
+
+### Authentication
+- `GET /api/auth/check/` - Check authentication status
+- `POST /api/auth/login/` - User login
+- `POST /api/auth/logout/` - User logout
+- `POST /api/auth/register/` - User registration
+
+### Products
+- `GET /api/products/` - List products
+- `POST /api/products/create/` - Create product
+- `GET /api/products/{id}/` - Get product details
+- `PUT /api/products/{id}/` - Update product
+
+### Carbon Credits
+- `GET /api/credits/` - List carbon credits
+- `POST /api/credits/create/` - Issue credit
+- `PUT /api/credits/{id}/transfer/` - Transfer credit
+- `PUT /api/credits/{id}/retire/` - Retire credit
+
+## 🎯 Use Cases
+
+### For Businesses
+- Track carbon footprint across supply chain
+- Issue and trade carbon credits
+- Ensure compliance with environmental regulations
+- Build trust through transparency
+
+### For Consumers
+- Verify product sustainability claims
+- Track carbon impact of purchases
+- Support environmentally responsible products
+
+### For Regulators
+- Monitor carbon credit markets
+- Ensure compliance and transparency
+- Audit environmental claims
+
+## 🔒 Security Features
+
+- **Blockchain Verification**: All transactions verified on-chain
+- **Role-Based Access**: Granular permission system
+- **Data Encryption**: Sensitive data encrypted at rest
 - **Audit Trails**: Complete transaction history
+- **Privacy Controls**: GDPR and eERC compliant
 
-## 🌐 **Deployment & Scaling**
+## 🌍 Environmental Impact
 
-### **Production Deployment**
-```bash
-# Frontend build
-cd frontend
-npm run build
+GreenTrace enables:
+- **Transparent Carbon Tracking**: Real-time visibility into carbon footprints
+- **Credible Carbon Credits**: Blockchain-verified carbon offsetting
+- **Supply Chain Sustainability**: End-to-end environmental monitoring
+- **Regulatory Compliance**: Automated compliance reporting
 
-# Backend deployment
-cd backend
-python3 manage.py collectstatic
-python3 manage.py migrate
-gunicorn greentrace.wsgi:application
-```
+## 🤝 Contributing
 
-### **Cloud Infrastructure**
-- **Frontend**: Vercel/Netlify for static hosting
-- **Backend**: AWS/GCP for Django API
-- **Database**: PostgreSQL with connection pooling
-- **Blockchain**: Multi-network node deployment
-
-## 🚀 **Future Roadmap**
-
-### **Phase 2**
-- [ ] IoT sensor integration
-- [ ] Advanced analytics dashboard
-- [ ] Mobile app development
-- [ ] Enterprise API access
-
-### **Phase 3**
-- [ ] AI-powered compliance prediction
-- [ ] Multi-language support
-- [ ] Advanced reporting tools
-- [ ] Third-party integrations
-
-### **Phase 4**
-- [ ] Global supply chain network
-- [ ] Advanced cross-chain protocols
-- [ ] Machine learning optimization
-- [ ] Enterprise partnerships
-
-## 🤝 **Contributing**
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### **Development Setup**
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 **License**
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏆 **Hackathon Achievements**
+## 🙏 Acknowledgments
 
-### **Technical Innovation**
-- **First-of-its-kind**: Complete supply chain transparency platform
-- **Blockchain Integration**: Real-time smart contract operations
-- **Cross-Chain Technology**: Multi-blockchain interoperability
-- **Production Ready**: Enterprise-grade architecture
+- **Avalanche** for the blockchain infrastructure
+- **Django** for the robust backend framework
+- **React** for the modern frontend experience
+- **Vercel** and **Render** for seamless deployment
 
-### **Business Impact**
-- **Supply Chain Transparency**: Solves real industry problems
-- **Carbon Credit Management**: Addresses climate change challenges
-- **Compliance Automation**: Reduces regulatory overhead
-- **Scalable Solution**: Ready for global deployment
+## 📞 Support
 
-### **Code Quality**
-- **Professional Architecture**: Industry-standard best practices
-- **Comprehensive Testing**: Full test coverage
-- **Documentation**: Complete technical documentation
-- **Performance Optimized**: Production-ready performance
-
-## 📞 **Contact & Support**
-
-- **Project Lead**: [ARKA](mailto:arka25.cp@gmail.com)
-- **GitHub Issues**: [Report Bugs](https://github.com/Godatcode/greentrace/issues)
-- **Documentation**: [Full Docs](https://docs.greentrace.com)
-- **Demo**: [Live Demo](https://demo.greentrace.com)
-
-## 🙏 **Acknowledgments**
-
-- **Avalanche Foundation** for blockchain infrastructure
-- **Django Software Foundation** for web framework
-- **React Team** for frontend library
-- **Open Source Community** for inspiration and tools
+- **Documentation**: Check the docs folder
+- **Issues**: [GitHub Issues](https://github.com/Godatcode/GreenTrace/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Godatcode/GreenTrace/discussions)
 
 ---
 
-<div align="center">
+**Built with ❤️ for a sustainable future**
 
-**🌱 Built with ❤️ for a sustainable future**
-
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/greentrace?style=social)](https://github.com/Godatcode/GreenTrace)
-[![GitHub forks](https://img.shields.io/github/forks/yourusername/greentrace?style=social)](https://github.com/Godatcode/GreenTrace)
-[![GitHub issues](https://img.shields.io/github/issues/yourusername/greentrace)](https://github.com/Godatcode/GreenTrace/issues)
-
-**Star this repo if you found it helpful! ⭐**
-
-</div>
+*Last Updated: September 13, 2025*

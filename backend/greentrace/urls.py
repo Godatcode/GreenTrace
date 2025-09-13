@@ -6,10 +6,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse, HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def health_check(request):
     """Simple health check endpoint"""
     try:
+        logger.info(f"Health check request: {request.method} {request.get_full_path()}")
+        logger.info(f"Headers: {dict(request.headers)}")
+        
         # Handle OPTIONS request for CORS
         if request.method == 'OPTIONS':
             response = JsonResponse({})
@@ -18,19 +24,21 @@ def health_check(request):
             response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
             return response
             
+        # Simple response without complex operations
         response_data = {
             "status": "healthy", 
             "service": "GreenTrace Backend",
             "message": "Backend is working!",
             "url": request.get_full_path(),
-            "method": request.method,
-            "django_apps": [app.label for app in __import__('django.apps', fromlist=['apps']).apps.get_app_configs()]
+            "method": request.method
         }
         
         response = JsonResponse(response_data)
         response['Access-Control-Allow-Origin'] = '*'
+        logger.info("Health check response sent successfully")
         return response
     except Exception as e:
+        logger.error(f"Health check error: {str(e)}")
         response_data = {
             "status": "error",
             "message": str(e),

@@ -127,7 +127,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # Admin security settings (hidden from public)
-ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='secure-admin-panel')
+# Admin path must be set via environment variable - no default
+ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default=None)
 
 # REST Framework settings
 REST_FRAMEWORK = {

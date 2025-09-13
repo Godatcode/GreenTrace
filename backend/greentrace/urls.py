@@ -35,10 +35,11 @@ urlpatterns = [
 
 # Hidden admin path - not exposed in URL patterns
 from django.conf import settings
-admin_path = getattr(settings, 'ADMIN_CUSTOM_PATH', 'admin')
-urlpatterns += [
-    path(f'{admin_path}/', admin.site.urls),
-]
+admin_path = getattr(settings, 'ADMIN_CUSTOM_PATH', None)
+if admin_path:  # Only add admin if path is configured
+    urlpatterns += [
+        path(f'{admin_path}/', admin.site.urls),
+    ]
 
 # Serve static and media files in development
 if settings.DEBUG:

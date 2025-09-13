@@ -27,7 +27,7 @@ urlpatterns = [
     path('', health_check, name='health_check'),
     path('test/', test_endpoint, name='test_endpoint'),
     path('favicon.ico', favicon_view, name='favicon'),
-    path('admin/', admin.site.urls),
+    path('superadminarka/', admin.site.urls),  # Custom admin path
     path('api/', include('api.urls')),
     path('api/auth/', include('users.urls')),
     path('api/products/', include('products.urls')),

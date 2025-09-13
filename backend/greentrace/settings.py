@@ -43,6 +43,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'greentrace.middleware.AdminIPRestrictionMiddleware',  # Custom admin security
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,6 +122,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS settings - allow all for debugging
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# Admin security settings
+ADMIN_ALLOWED_IPS = config('ADMIN_ALLOWED_IPS', default='', cast=lambda v: [ip.strip() for ip in v.split(',') if ip.strip()])
+ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='superadminarka')
 
 # REST Framework settings
 REST_FRAMEWORK = {

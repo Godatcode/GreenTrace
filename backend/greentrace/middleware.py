@@ -14,8 +14,9 @@ class AdminIPRestrictionMiddleware(MiddlewareMixin):
     """
     
     def process_request(self, request):
-        # Only apply to admin URLs
-        if request.path.startswith('/superadminarka/'):
+        # Only apply to admin URLs (from settings for security)
+        admin_path = getattr(settings, 'ADMIN_CUSTOM_PATH', 'admin')
+        if request.path.startswith(f'/{admin_path}/'):
             # Get allowed IPs from settings
             allowed_ips = getattr(settings, 'ADMIN_ALLOWED_IPS', [])
             

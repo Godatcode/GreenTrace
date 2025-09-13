@@ -15,6 +15,10 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-producti
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# Custom error handlers
+handler404 = 'greentrace.views.custom_404'
+handler500 = 'greentrace.views.custom_500'
+
 # More permissive ALLOWED_HOSTS for debugging
 ALLOWED_HOSTS = ['*']
 
@@ -123,9 +127,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# Admin security settings
+# Admin security settings (hidden from public)
+ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='admin')
 ADMIN_ALLOWED_IPS = config('ADMIN_ALLOWED_IPS', default='', cast=lambda v: [ip.strip() for ip in v.split(',') if ip.strip()])
-ADMIN_CUSTOM_PATH = config('ADMIN_CUSTOM_PATH', default='superadminarka')
 
 # REST Framework settings
 REST_FRAMEWORK = {

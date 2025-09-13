@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
-    startCommand: "python manage.py migrate && gunicorn greentrace.wsgi:application --bind 0.0.0.0:$PORT"
+    startCommand: "python manage.py migrate && gunicorn greentrace.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -14,3 +14,7 @@ services:
         value: "*.onrender.com,localhost,127.0.0.1"
       - key: CORS_ALLOWED_ORIGINS
         value: "https://greentrace-frontend.vercel.app,https://greentrace-app.vercel.app"
+      - key: STATIC_URL
+        value: "/static/"
+      - key: MEDIA_URL
+        value: "/media/"

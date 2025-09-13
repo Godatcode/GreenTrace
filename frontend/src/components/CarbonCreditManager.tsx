@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ethers } from 'ethers';
+import { API_ENDPOINTS } from '../config/api';
 
 interface CarbonCredit {
   id: string;
@@ -143,7 +144,7 @@ const CarbonCreditManager: React.FC<CarbonCreditManagerProps> = ({ carbonCredit,
       
       // First save to Django backend
       try {
-        const djangoResponse = await fetch('http://localhost:8000/api/credits/create/', {
+        const djangoResponse = await fetch(API_ENDPOINTS.CREDITS.CREATE, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

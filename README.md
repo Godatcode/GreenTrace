@@ -10,7 +10,7 @@ A comprehensive blockchain-based platform for carbon credit management and suppl
 
 ## 🚀 Live Demo
 
-- **Frontend**: [Your Vercel URL]
+- **Frontend**: https://greentrace-eta.vercel.app/
 - **Backend API**: https://greentrace-backend-eh4d.onrender.com/
 - **Smart Contracts**: [Avalanche Fuji Testnet](https://testnet.snowtrace.io/)
 
